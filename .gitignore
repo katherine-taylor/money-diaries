@@ -40,6 +40,7 @@ vignettes/*.pdf
 
 # data
 data/raw_data
+data/clean_data
 
 # annoying mac things
 .DS_Store

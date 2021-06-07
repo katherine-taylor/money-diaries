@@ -1,4 +1,4 @@
-# 01_data_cleaning.R
+# 02_data_cleaning.R
 # 06-01-21
 
 # libraries
@@ -26,4 +26,6 @@ end <- "Money Diaries are meant to reflect an individual's experience and do not
 diaries <- diaries_messy |>
   pivot_longer(cols = diary_1:diary_30) |>
   rename("diary_number" = name, "text" = value)
+
+
   
