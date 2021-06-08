@@ -1,0 +1,65 @@
+---
+title: "Money Diary Salary Modeling"
+author: "Katherine Taylor"
+date: "6/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# libraries
+# install.packages("textrecipes")
+# install.packages("textfeatures")
+# install.packages("tidymodels")
+# install.packages("LiblineaR")
+library(tidyverse)
+library(tidymodels)
+library(tidytext)
+library(textrecipes)
+library(textfeatures)
+# import data
+
+md <- read_csv(here::here("data/clean_data/md_features.csv"))
+
+# minimal cleaning
+md <- md |>
+  mutate(salary = parse_number(salary)) |>
+  filter(diary_number != 24)
+
+# settings
+tidymodels_prefer()
+```
+
+# Preprocessing Recipe
+```{r recipe}
+md_rec <- recipe(salary ~ word_count + num_expenses + expenses_words_only + num_purchases + purchases_words_only, data = md) |>
+  step_tokenize(expenses_words_only, purchases_words_only) |>
+  step_tokenfilter(expenses_words_only, purchases_words_only, max_tokens = 300) |>
+  step_tfidf(expenses_words_only, purchases_words_only) |>
+  step_normalize(all_predictors())
+```
+
+```{r check_recipe}
+md_rec
+```
+
+```{r workflow}
+md_wf <- workflow() %>%
+  add_recipe(md_rec)
+
+md_wf
+```
+
+```{r model_spec}
+svm_spec <- svm_linear() %>%
+  set_mode("regression") %>%
+  set_engine("LiblineaR")
+```
+
+```{r workflow_model}
+svm_fit <- md_wf %>%
+  add_model(svm_spec) %>%
+  fit(data = md)
+```
+
