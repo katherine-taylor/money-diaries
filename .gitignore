@@ -44,3 +44,6 @@ data/clean_data
 
 # annoying mac things
 .DS_Store
+
+# .Rprofile
+.Rprofile

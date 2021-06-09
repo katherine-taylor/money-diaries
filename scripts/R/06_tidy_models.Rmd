@@ -18,6 +18,7 @@ library(tidymodels)
 library(tidytext)
 library(textrecipes)
 library(textfeatures)
+library(LiblineaR)
 # import data
 
 md <- read_csv(here::here("data/clean_data/md_features.csv"))
@@ -61,5 +62,9 @@ svm_spec <- svm_linear() %>%
 svm_fit <- md_wf %>%
   add_model(svm_spec) %>%
   fit(data = md)
+```
+
+```{r}
+hello!
 ```
 
