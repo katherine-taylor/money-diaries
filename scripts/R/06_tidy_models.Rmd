@@ -64,7 +64,10 @@ svm_fit <- md_wf %>%
   fit(data = md)
 ```
 
-```{r}
-hello!
+```{r view_model}
+svm_fit %>%
+  pull_workflow_fit() %>%
+  tidy() %>%
+  arrange(estimate)
 ```
 
